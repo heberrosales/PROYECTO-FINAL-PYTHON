@@ -36,13 +36,13 @@ def crear_articulo(request):
            articulo.save()  # Lo guardan en la Base de datos
 
            # Redirecciono al usuario a la lista de cursos
-           url_exitosa = reverse('crear-articulo')  
-           return redirect(url_exitosa)
+           #url_exitosa = reverse('crear-articulo')  
+           return redirect("crear-articulo")
    else:  # GET
        formulario = CrearArticulo()
        http_response = render(
        request=request,
-       template_name='AppBlog/crear-articulo.html',
+       template_name='AppBlog/crear_articulo.html',
        context={'formulario': formulario}
    )
    return http_response
