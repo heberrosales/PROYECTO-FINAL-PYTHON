@@ -1,7 +1,5 @@
 from django.contrib import admin
-#from .models import FrutosSecos, Vinos, Sucursales
+from .models import Articulo
 
 # Register your models here.
-# admin.site.register(FrutosSecos)
-# admin.site.register(Vinos)
-# admin.site.register(Sucursales)
+admin.site.register(Articulo)

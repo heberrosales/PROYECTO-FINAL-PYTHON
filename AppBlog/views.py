@@ -4,8 +4,8 @@ from django.http import HttpResponse
 from datetime import datetime
 from django.template import Template, Context
 #from django.template import loader   CREO QUE EL PROFESOR NO LO USO
-#from AppBlog.models import 
-from AppBlog.forms import VinoFormulario
+from AppBlog.models import Articulo
+from AppBlog.forms import CrearArticulo
 
 
 # Create your views here.
@@ -20,6 +20,32 @@ def article(request):
 
 def ListaDeArticulos(request):
     return render(request, "AppBlog/pages.html")
+
+def crear_articulo(request):
+   if request.method == "POST":
+       formulario = CrearArticulo(request.POST)
+
+       if formulario.is_valid():
+           data = formulario.cleaned_data  # es un diccionario
+           titulo = data["titulo"]
+           subtitulo = data["subtitulo"]
+           cuerpo = data["cuerpo"]
+           Autor = data["Autor"]
+           fecha = data["fecha"]
+           articulo = Articulo(titulo=titulo, subtitulo=subtitulo, cuerpo=cuerpo, Autor=Autor, fecha=fecha, )  # lo crean solo en RAM
+           articulo.save()  # Lo guardan en la Base de datos
+
+           # Redirecciono al usuario a la lista de cursos
+           url_exitosa = reverse('pages')  
+           return redirect(url_exitosa)
+   else:  # GET
+       formulario = CrearArticulo()
+       http_response = render(
+       request=request,
+       template_name='AppBlog/crear_articulo.html',
+       context={'formulario': formulario}
+   )
+   return http_response
 
 
 #def comentarios(request):

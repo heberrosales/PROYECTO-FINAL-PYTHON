@@ -13,7 +13,8 @@ urlpatterns = [
     # path('sumar-vino/', views.sumar_vino, name="sumar_vino"),
     # path('buscar-vino/', views.buscar_vinos, name="buscar_vinos")
     path('', views.home, name="home"),
-    path('article', views.article, name="articulos"),
-    path('pages', views.ListaDeArticulos, name="ListaArticulos"),
-    path('about', views.about, name="about"),
+    path('article/', views.article, name="articulos"),
+    path('pages/', views.ListaDeArticulos, name="ListaArticulos"),
+    path('about/', views.about, name="about"),
+    path('crear-articulo/', views.crear_articulo, name="crear-articulo"),
 ]
