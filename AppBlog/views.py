@@ -19,7 +19,16 @@ def article(request):
     return render(request, "AppBlog/article.html")
 
 def ListaDeArticulos(request):
-    return render(request, "AppBlog/pages.html")
+    contexto = {
+        "articulos": Articulo.objects.all(),
+    }
+    http_response = render(
+        request=request,
+        template_name='AppBlog/pages.html',
+        context=contexto,
+    )
+    return http_response
+
 
 def crear_articulo(request):
    if request.method == "POST":
@@ -37,7 +46,7 @@ def crear_articulo(request):
 
            # Redirecciono al usuario a la lista de cursos
            #url_exitosa = reverse('crear-articulo')  
-           return redirect("crear-articulo")
+           return redirect("ListaArticulos")
    else:  # GET
        formulario = CrearArticulo()
        http_response = render(
@@ -46,6 +55,58 @@ def crear_articulo(request):
        context={'formulario': formulario}
    )
    return http_response
+
+def buscar_articulo(request):
+   if request.method == "POST":
+       data = request.POST
+       busqueda = data["busqueda"]
+       articulos = Articulo.objects.filter(titulo__icontains=busqueda)
+       contexto = {
+           "articulos": articulos,
+       }
+       http_response = render(
+           request=request,
+           template_name='AppBlog/pages.html',
+           context=contexto,
+       )
+       return http_response 
+   
+def eliminar_articulo(request, id):
+   articulo = Articulo.objects.get(id=id)
+   if request.method == "POST":
+       articulo.delete()
+       url_exitosa = reverse('ListaArticulos')
+       return redirect(url_exitosa)
+   
+def editar_articulo(request, id):
+   articulo = Articulo.objects.get(id=id)
+   if request.method == "POST":
+       formulario = CrearArticulo(request.POST)
+
+       if formulario.is_valid():
+           data = formulario.cleaned_data
+           articulo.titulo = data["titulo"]
+           articulo.subtitulo = data["subtitulo"]
+           articulo.cuerpo = data["cuerpo"]
+           articulo.Autor = data["Autor"]
+           articulo.fecha = data["fecha"]
+           articulo.save()
+           url_exitosa = reverse('ListaArticulos')
+           return redirect(url_exitosa)
+   else:  # GET
+       inicial = {
+           'titulo':articulo.titulo, 
+           'subtitulo':articulo.subtitulo, 
+           'cuerpo':articulo.cuerpo, 
+           'Autor':articulo.Autor, 
+           'fecha':articulo.fecha,
+       }
+       formulario = CrearArticulo(initial=inicial)
+   return render(
+       request=request,
+       template_name='AppBlog/pages.html',
+       context={'formulario': formulario},
+   )
 
 
 #def comentarios(request):

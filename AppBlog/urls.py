@@ -17,4 +17,7 @@ urlpatterns = [
     path('pages/', views.ListaDeArticulos, name="ListaArticulos"),
     path('about/', views.about, name="about"),
     path('crear-articulo/', views.crear_articulo, name="crear-articulo"),
+    path('buscar-articulo/', views.buscar_articulo, name="buscar_articulo"),
+    path('eliminar-articulo/<int:id>/', views.eliminar_articulo, name="eliminar_articulo"),
+    path('editar-articulo/<int:id>/', views.editar_articulo, name="editar_articulo"),
 ]
