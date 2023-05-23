@@ -1,0 +1,15 @@
+{% extends "AppBlog/padre.html" %}
+{% load static %}
+
+{% block contenidoQueCambia %}
+  <section>
+    <div>
+      <h1>Editar Artículo</h1>
+      <form method="POST" action="">
+        {% csrf_token %}
+        {{ formulario.as_p }}
+        <input type="submit" value="Guardar cambios">
+      </form>
+    </div>
+  </section>
+{% endblock %}

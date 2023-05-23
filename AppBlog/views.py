@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.http import HttpResponse
 from datetime import datetime
@@ -79,35 +79,53 @@ def eliminar_articulo(request, id):
        return redirect(url_exitosa)
    
 def editar_articulo(request, id):
-   articulo = Articulo.objects.get(id=id)
-   if request.method == "POST":
-       formulario = CrearArticulo(request.POST)
+    articulo = get_object_or_404(Articulo, id=id)
+    if request.method == "POST":
+        formulario = CrearArticulo(request.POST)
 
-       if formulario.is_valid():
-           data = formulario.cleaned_data
-           articulo.titulo = data["titulo"]
-           articulo.subtitulo = data["subtitulo"]
-           articulo.cuerpo = data["cuerpo"]
-           articulo.Autor = data["Autor"]
-           articulo.fecha = data["fecha"]
-           articulo.save()
-           url_exitosa = reverse('ListaArticulos')
-           return redirect(url_exitosa)
-   else:  # GET
-       inicial = {
-           'titulo':articulo.titulo, 
-           'subtitulo':articulo.subtitulo, 
-           'cuerpo':articulo.cuerpo, 
-           'Autor':articulo.Autor, 
-           'fecha':articulo.fecha,
-       }
-       formulario = CrearArticulo(initial=inicial)
-   return render(
-       request=request,
-       template_name='AppBlog/pages.html',
-       context={'formulario': formulario},
-   )
+        if formulario.is_valid():
+             data = formulario.cleaned_data
+             articulo.titulo = data["titulo"]
+             articulo.subtitulo = data["subtitulo"]
+             articulo.cuerpo = data["cuerpo"]
+             articulo.Autor = data["Autor"]
+             articulo.fecha = data["fecha"]
+             articulo.save()
+             url_exitosa = reverse('ListaArticulos')
+             return redirect(url_exitosa)
+    else:  # GET
+        inicial = {
+            'titulo': articulo.titulo, 
+            'subtitulo': articulo.subtitulo, 
+            'cuerpo': articulo.cuerpo, 
+            'Autor': articulo.Autor, 
+            'fecha': articulo.fecha,
+        }
+        formulario = CrearArticulo(initial=inicial)
+    return render(
+        request=request,
+        template_name='AppBlog/editar_articulo.html',
+        context={'formulario': formulario},
+    )
+# def editar_articulo(request, id):
+#     articulo = get_object_or_404(Articulo, id=id)
 
+#     if request.method == "POST":
+#         formulario = CrearArticulo(request.POST, instance=articulo)
+
+#         if formulario.is_valid():
+#             formulario.save()
+
+#             url_exitosa = reverse('ListaArticulos')
+#             return redirect(url_exitosa)
+#     else:
+#         formulario = CrearArticulo(instance=articulo)
+
+#     return render(
+#         request=request,
+#         template_name='AppBlog/editar_articulo.html',
+#         context={'formulario': formulario},
+#     )
 
 #def comentarios(request):
     #Sucursales
