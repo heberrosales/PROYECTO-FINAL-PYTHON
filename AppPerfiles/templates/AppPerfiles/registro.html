@@ -1,9 +1,9 @@
 {% extends "AppBlog/padre.html" %}
 
-{% block contenido %}
+{% block contenidoQueCambia %}
     <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Registrarse" />
     </form>
-{% endblock contenido %}
+{% endblock contenidoQueCambia %}

@@ -9,7 +9,7 @@ def registro(request):
 
        if formulario.is_valid():
            formulario.save()  # Esto lo puedo usar porque es un model form
-           url_exitosa = reverse('inicio')
+           url_exitosa = reverse('registro')
            return redirect(url_exitosa)
    else:  # GET
        formulario = UserRegisterForm()
