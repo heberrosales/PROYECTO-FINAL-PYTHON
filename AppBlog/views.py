@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse
 from datetime import datetime
 from django.template import Template, Context
 #from django.template import loader   CREO QUE EL PROFESOR NO LO USO
 from AppBlog.models import Articulo
 from AppBlog.forms import CrearArticulo
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 
 # Create your views here.
@@ -107,6 +108,11 @@ def editar_articulo(request, id):
         template_name='AppBlog/editar_articulo.html',
         context={'formulario': formulario},
     )
+
+class ArticuloDetailView(DetailView):
+   model = Articulo
+   success_url = reverse_lazy('ListaArticulos')
+
 # def editar_articulo(request, id):
 #     articulo = get_object_or_404(Articulo, id=id)
 

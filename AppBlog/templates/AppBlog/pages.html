@@ -31,14 +31,19 @@
                 <td>{{ articulo.Autor }}</td>
                 <td>{{ articulo.fecha }}</td>
                 <td>
+                    <a href="{% url 'articulo' articulo.id %}">Leer Mas</a>
+                  </td>
+         
+                <td>
                     <a href="{% url 'editar_articulo' articulo.id %}">Editar</a>
                 </td>
              
                 <td>
-                    <form action="{% url 'eliminar_articulo' articulo.id %}" method="post">
-                      {% csrf_token %}
-                      <input type="submit" value="Eliminar">
-                    </form>
+                    <form action="{% url 'eliminar_articulo' articulo.id %}" method="post"> 
+                      {% csrf_token %} 
+                      <input type="submit" value="Eliminar"> 
+                      
+                    </form> 
                 </td>
              
               </tr>

@@ -1,0 +1,28 @@
+{% extends "AppBlog/padre.html" %}
+{% load static %} 
+
+{% block contenidoQueCambia %}
+
+    <p style="color:blueviolet"> Articulo </p>
+    <p>
+        <strong>Titulo:</strong> {{object.titulo}}
+       </p>
+       <p>
+        <strong>subtitulo:</strong> {{object.subtitulo}}
+       </p>
+       <p>
+        <strong>cuerpo:</strong> {{object.cuerpo}}
+       </p>
+       <p>
+        <strong>Autor:</strong> {{object.Autor}}
+       </p>
+       <p>
+        <strong>fecha:</strong> {{object.fecha}}
+    </p>
+       
+    <br>
+    <a href="{% url 'ListaArticulos' %}">Volver lista</a>
+
+
+{% endblock %} 
+
