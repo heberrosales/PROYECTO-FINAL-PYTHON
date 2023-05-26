@@ -7,6 +7,12 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth import login, authenticate
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import UpdateView
+
+from AppPerfiles.forms import UserRegisterForm, UserUpdateForm
+
+
 def registro(request):
    if request.method == "POST":
        formulario = UserRegisterForm(request.POST)
@@ -24,6 +30,7 @@ def registro(request):
    )
 
 def login_view(request):
+   next_url = request.GET.get('next')
    if request.method == "POST":
        form = AuthenticationForm(request, data=request.POST)
 
@@ -33,8 +40,10 @@ def login_view(request):
            password = data.get('password')
            user = authenticate(username=usuario, password=password)
            # user puede ser un usuario o None
-           if user:
+           if User:
                login(request=request, user=user)
+               if next_url:
+                   return redirect(next_url)
                url_exitosa = reverse('home')
                return redirect(url_exitosa)
    else:  # GET
@@ -46,4 +55,12 @@ def login_view(request):
    )
 
 class CustomLogoutView(LogoutView):
-   template_name = 'perfiles/logout.html'
+   template_name = 'AppPerfiles/logout.html'
+
+class MiPerfilUpdateView(LoginRequiredMixin, UpdateView):
+   form_class = UserUpdateForm
+   success_url = reverse_lazy('home')
+   template_name = 'AppPerfiles/formulario_perfil.html'
+
+   def get_object(self, queryset=None):
+       return self.request.user

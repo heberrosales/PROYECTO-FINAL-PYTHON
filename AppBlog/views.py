@@ -7,7 +7,8 @@ from django.template import Template, Context
 from AppBlog.models import Articulo
 from AppBlog.forms import CrearArticulo
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 def home(request):
@@ -30,7 +31,7 @@ def ListaDeArticulos(request):
     )
     return http_response
 
-
+@login_required
 def crear_articulo(request):
    if request.method == "POST":
        formulario = CrearArticulo(request.POST)
@@ -42,7 +43,8 @@ def crear_articulo(request):
            cuerpo = data["cuerpo"]
            Autor = data["Autor"]
            fecha = data["fecha"]
-           articulo = Articulo(titulo=titulo, subtitulo=subtitulo, cuerpo=cuerpo, Autor=Autor, fecha=fecha, )  # lo crean solo en RAM
+           creador = request.user
+           articulo = Articulo(titulo=titulo, subtitulo=subtitulo, cuerpo=cuerpo, Autor=Autor, fecha=fecha, creador = creador)  # lo crean solo en RAM
            articulo.save()  # Lo guardan en la Base de datos
 
            # Redirecciono al usuario a la lista de cursos
@@ -56,6 +58,7 @@ def crear_articulo(request):
        context={'formulario': formulario}
    )
    return http_response
+
 
 def buscar_articulo(request):
    if request.method == "POST":
@@ -72,13 +75,15 @@ def buscar_articulo(request):
        )
        return http_response 
    
+@login_required  
 def eliminar_articulo(request, id):
    articulo = Articulo.objects.get(id=id)
    if request.method == "POST":
        articulo.delete()
        url_exitosa = reverse('ListaArticulos')
        return redirect(url_exitosa)
-   
+
+@login_required   
 def editar_articulo(request, id):
     articulo = get_object_or_404(Articulo, id=id)
     if request.method == "POST":
@@ -109,7 +114,7 @@ def editar_articulo(request, id):
         context={'formulario': formulario},
     )
 
-class ArticuloDetailView(DetailView):
+class ArticuloDetailView(LoginRequiredMixin, DetailView):
    model = Articulo
    success_url = reverse_lazy('ListaArticulos')
 

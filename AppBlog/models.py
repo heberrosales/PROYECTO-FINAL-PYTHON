@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -9,6 +10,7 @@ class Articulo(models.Model):
     cuerpo= models.TextField()
     Autor = models.CharField(max_length=64)
     fecha= models.DateField(null=True)
+    creador = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     #imagen
 
 
