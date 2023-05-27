@@ -1,4 +1,4 @@
-# 3ra Entrega
+# Proyecto final
 
 ## Instrucciones instalar proyecto en local
 + Crea una carpeta contenedora madre
