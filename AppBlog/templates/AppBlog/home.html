@@ -4,6 +4,7 @@
 {% block contenidoQueCambia %}
 
     <h1 style="color:blueviolet"> Bienvenido a Portofino {{ user.first_name }} </h1>
+    <img src="{{ user.avatar.imagen.url }}" />
 
 
 {% endblock %} 
